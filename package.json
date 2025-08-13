@@ -1,6 +1,6 @@
 {
   "name": "bare-union-bundle",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Union bundle",
   "main": "index.js",
   "imports": {
