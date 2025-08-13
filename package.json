@@ -1,0 +1,29 @@
+{
+  "name": "bare-union-bundle",
+  "version": "0.0.0",
+  "description": "Union bundle",
+  "main": "index.js",
+  "imports": {
+    "fs": {
+      "bare": "bare-fs",
+      "default": "fs"
+    }
+  },
+  "dependencies": {
+    "b4a": "^1.6.7",
+    "bare-bundle": "^1.8.4",
+    "bare-fs": "^4.2.0",
+    "bare-module": "^5.0.2",
+    "bare-module-traverse": "^1.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holepunchto/bare-union-bundle.git"
+  },
+  "author": "Holepunch Inc",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holepunchto/bare-union-bundle/issues"
+  },
+  "homepage": "https://github.com/holepunchto/bare-union-bundle"
+}
