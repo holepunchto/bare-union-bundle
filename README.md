@@ -52,11 +52,11 @@ A layer bundle can be loaded by creating the union with the previous layer bundl
 const b = UnionBundle.require('./0.bundle', './1.bundle', './2.bundle')
 
 const layer = b.add(new URL('file://root-of-project'), 'entrypoint.js')
-await fs.writeFile(new URL('.', '3.bundle'), layer.toBuffer())
+await fs.writeFile('./3.bundle', layer.toBuffer())
 
 // Loading
 const b = UnionBundle.require('./0.bundle', './1.bundle', './2.bundle', './3.bundle')
-const mod = b.load(new URL('.'), 'entrypoint.js')
+const mod = b.load(new URL('file://root-of-project'), 'entrypoint.js')
 ```
 
 #### `const bundle = b.checkout(index)`
