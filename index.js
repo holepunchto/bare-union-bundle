@@ -86,7 +86,6 @@ module.exports = class UnionBundle {
       },
       read (url) {
         const p = url.pathname
-        console.log(p)
         return b.read(p)
       }
     })
