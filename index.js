@@ -96,10 +96,10 @@ module.exports = class UnionBundle {
     for (const [id, map] of Object.entries(b.resolutions)) {
       const m = {}
       for (const [k, v] of Object.entries(map)) {
-        const nm = new URL('.' + v, root).href
-        if (skipModules && v.startsWith('/node_modules/') && cache[nm]) {
+        const nm = (v.startsWith('/node_modules') && skipModules) ? findModule(cache, v, root) : null
+        if (nm) {
           m[k] = 'bundle://host' + v
-          bundleCache[m[k]] = cache[nm]
+          bundleCache[m[k]] = nm
         } else {
           m[k] = 'bundle://layer' + v
         }
@@ -166,4 +166,20 @@ async function * listPrefix (url) {
       yield new URL(entry.name, url)
     }
   }
+}
+
+function findModule (cache, v, root) {
+  let s = '.'
+  let prev = null
+
+  while (true) {
+    const cand = new URL(s + v, root).href
+    s += '/..'
+    if (prev === cand) break
+    prev = cand
+    const nm = cache[cand]
+    if (nm) return nm
+  }
+
+  return null
 }
