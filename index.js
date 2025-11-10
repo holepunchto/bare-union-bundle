@@ -7,7 +7,8 @@ const b4a = require('b4a')
 
 module.exports = class UnionBundle {
   constructor (bundles) {
-    this.bundles = bundles
+    this.pending = bundles
+    this.bundles = new Array(bundles.length)
   }
 
   static require (...files) {
@@ -17,6 +18,7 @@ module.exports = class UnionBundle {
 
   get (key) {
     for (let i = this.bundles.length - 1; i >= 0; i--) {
+      if (!this.bundles[i]) this.bundles[i] = loadBundle(this.pending[i])
       const source = this.bundles[i].read(key)
       if (!source) continue
       return {
@@ -31,6 +33,7 @@ module.exports = class UnionBundle {
     const bundle = new Bundle()
 
     for (let i = n; i >= 0; i--) {
+      if (!this.bundles[i]) this.bundles[i] = loadBundle(this.pending[i])
       const b = this.bundles[i]
       for (const k of b.keys()) {
         const has = bundle.read(k)
@@ -182,4 +185,8 @@ function findModule (cache, v, root) {
   }
 
   return null
+}
+
+function loadBundle (b) {
+  return typeof b === 'function' ? b() : b
 }
