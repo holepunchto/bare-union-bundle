@@ -150,7 +150,15 @@ async function openDir (url) {
 async function isFile (url) {
   return new Promise((resolve) => {
     fs.stat(fileURLToPath(url), (err, stat) => {
-      resolve(err !== null || stat.isFile())
+      resolve(err === null && stat.isFile())
+    })
+  })
+}
+
+async function isDir (url) {
+  return new Promise((resolve) => {
+    fs.stat(fileURLToPath(url), (err, stat) => {
+      resolve(err === null && stat.isDirectory())
     })
   })
 }
@@ -162,11 +170,13 @@ async function * listPrefix (url) {
     url.pathname += '/'
   }
 
-  for await (const entry of await openDir(url)) {
-    if (entry.isDirectory()) {
-      yield * listPrefix(new URL(entry.name, url))
-    } else {
-      yield new URL(entry.name, url)
+  if (await isDir(url)) {
+    for await (const entry of await openDir(url)) {
+      if (entry.isDirectory()) {
+        yield * listPrefix(new URL(entry.name, url))
+      } else {
+        yield new URL(entry.name, url)
+      }
     }
   }
 }
